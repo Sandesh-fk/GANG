@@ -1,34 +1,36 @@
 import streamlit as st
 import pandas as pd
-import plotly.express as px
-from backend import load_data, preprocess_data, differential_expression
+from backend import load_patient_data, assess_patient_health, predict_cancer_type
 
-def main():
-    st.title("Gene Expression Explorer")
+st.set_page_config(page_title="Patient Gene Expression Analyzer", layout="wide")
+st.title("🧬 Patient Gene Expression Analyzer")
 
-    expression_file = st.file_uploader("Upload Gene Expression Data", type=["xlsx"])
-    metadata_file = st.file_uploader("Upload Sample Metadata", type=["xlsx"])
+st.write("Upload your gene expression data and metadata below to determine your health status and potential cancer type.")
 
-    if expression_file and metadata_file:
-        expression_data, metadata = load_data(expression_file, metadata_file)
-        expression_data = preprocess_data(expression_data)
+expression_file = st.file_uploader("📄 Upload Gene Expression File (.xlsx)", type=["xlsx"])
+metadata_file = st.file_uploader("📄 Upload Patient Metadata File (.xlsx)", type=["xlsx"])
 
-        st.write("Gene Expression Data", expression_data.head())
-        st.write("Sample Metadata", metadata.head())
+if expression_file and metadata_file:
+    expr_df, meta_df = load_patient_data(expression_file, metadata_file)
 
-        results = differential_expression(expression_data, metadata)
-        st.write("Differential Expression Results", results.head())
+    st.subheader("📊 Uploaded Expression Data")
+    st.dataframe(expr_df)
 
-        fig = px.histogram(results, x='adjusted_p_value', nbins=50, title="Distribution of Adjusted p-values")
-        st.plotly_chart(fig)
+    st.subheader("📋 Uploaded Patient Metadata")
+    st.dataframe(meta_df)
 
-        gene = st.text_input("Enter Gene ID to View Expression Levels")
-        if gene:
-            if gene in expression_data.index:
-                gene_expression = expression_data.loc[gene]
-                st.write(f"Expression Levels for {gene}", gene_expression)
-            else:
-                st.write("Gene not found in the dataset.")
+    st.subheader("🧠 Health Assessment")
+    health_df = assess_patient_health(expr_df, meta_df)
+    st.dataframe(health_df)
 
-if __name__ == "__main__":
-    main()
+    selected_patient = st.selectbox("Select a patient to predict cancer type", meta_df["PatientID"])
+    if selected_patient:
+        cancer_type = predict_cancer_type(expr_df, selected_patient)
+        health_status = health_df[health_df["PatientID"] == selected_patient]["Assessment"].values[0]
+
+        st.markdown(f"### 🧾 Result for {selected_patient}")
+        st.write(f"- Health Status: **{health_status}**")
+        if health_status == "Cancer":
+            st.write(f"- Predicted Cancer Type: **{cancer_type}**")
+        else:
+            st.write("- No signs of cancer detected.")
