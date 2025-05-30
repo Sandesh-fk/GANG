@@ -1,0 +1,4 @@
+gene,sample1,sample2,sample3,sample4,sample5,sample6,group
+GeneA,5.1,5.3,5.5,7.2,7.5,7.1,healthy,disease,disease,healthy,healthy,disease
+GeneB,2.0,2.2,2.3,4.5,4.7,4.8,healthy,disease,disease,healthy,healthy,disease
+GeneC,8.0,7.8,7.9,6.5,6.2,6.3,healthy,disease,disease,healthy,healthy,disease

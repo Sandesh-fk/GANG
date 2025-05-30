@@ -1,0 +1,5 @@
+body { font-family: Arial, sans-serif; margin: 20px; }
+h1 { color: #333; }
+form label { display: block; margin: 5px 0; }
+#results-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+#results-table th, #results-table td { border: 1px solid #ccc; padding: 8px; text-align: left; }

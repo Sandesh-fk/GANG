@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Gene Expression Explorer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Gene Expression Explorer</h1>
+    <form id="geo-form">
+        <label>GEO ID: <input type="text" id="geo" required></label><br>
+        <label>Group Column (metadata key): <input type="text" id="group_col" required></label><br>
+        <label>Group 1 Name: <input type="text" id="group1" required></label><br>
+        <label>Group 2 Name: <input type="text" id="group2" required></label><br>
+        <label>Top N Genes: <input type="number" id="top_n" value="20"></label><br>
+        <button type="submit">Analyze</button>
+    </form>
+    <table id="results-table">
+        <thead>
+            <tr><th>Gene</th><th>P-value</th><th>Mean Group 1</th><th>Mean Group 2</th></tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <script src="script.js"></script>
+</body>
+</html>
