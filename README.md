@@ -8,21 +8,6 @@ A simple web application to analyze GEO gene expression datasets for differentia
 - Simple Flask backend with JSON API
 - Frontend with HTML, CSS, and JavaScript for user interaction
 
-## Usage
-
-1. **Install dependencies**  
-   ```bash
-   pip install -r backend/requirements.txt
-   ```
-
-2. **Run the backend**  
-   ```bash
-   python backend/app.py
-   ```
-
-3. **Open the frontend**  
-   Open `frontend/index.html` in your browser.
-
 ## Project Structure
 ```
 .
