@@ -1,4 +1,6 @@
-Flask
+streamlit
 pandas
-scipy
 numpy
+scipy
+plotly
+openpyxl
