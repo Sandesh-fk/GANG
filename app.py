@@ -7,13 +7,41 @@ from sklearn.decomposition import PCA
 from scipy.stats import ttest_ind
 from backend import load_patient_data, predict_cancer_type
 
+# Set page configuration
 st.set_page_config(page_title="Patient Gene Expression Analyzer", layout="wide")
-st.title("🧬 Patient Gene Expression Analyzer")
 
+# Custom CSS for blue theme
+st.markdown("""
+    <style>
+        body {
+            background-color: #f0f8ff;
+        }
+        .main {
+            background-color: #ffffff;
+        }
+        h1, h2, h3 {
+            color: #0b5394;
+        }
+        .stButton>button {
+            color: white;
+            background-color: #0b5394;
+            border: none;
+        }
+        .stCheckbox>label>div {
+            color: #0b5394;
+        }
+        .stSelectbox>div>div>div {
+            color: #0b5394;
+        }
+    </style>
+""", unsafe_allow_html=True)
+
+# Title and intro
+st.title("🧬 Patient Gene Expression Analyzer")
 st.write("""
-Upload your gene expression data and metadata below. 
-The app will determine each patient’s condition based on metadata. 
-If the patient is diseased, it will predict the cancer type. 
+Upload your gene expression data and metadata below.  
+The app will determine each patient’s condition based on metadata.  
+If the patient is diseased, it will predict the cancer type.  
 You can also explore the data visually with Heatmap, Volcano Plot, and PCA.
 """)
 
@@ -71,7 +99,7 @@ if expression_file and metadata_file:
     if st.checkbox("🔬 Show Heatmap"):
         st.subheader("🌡️ Gene Expression Heatmap")
         fig, ax = plt.subplots(figsize=(10, 6))
-        sns.heatmap(expr_df, cmap="coolwarm", ax=ax)
+        sns.heatmap(expr_df, cmap="Blues", ax=ax)
         st.pyplot(fig)
 
     if st.checkbox("🌋 Show Volcano Plot"):
@@ -98,7 +126,7 @@ if expression_file and metadata_file:
         })
 
         fig, ax = plt.subplots()
-        sns.scatterplot(data=volcano_df, x="log2FC", y="-log10(p-value)", ax=ax)
+        sns.scatterplot(data=volcano_df, x="log2FC", y="-log10(p-value)", ax=ax, hue=volcano_df["-log10(p-value)"] > 1.3, palette="coolwarm")
         ax.axhline(y=1.3, color='red', linestyle='--')
         ax.axvline(x=1, color='blue', linestyle='--')
         ax.axvline(x=-1, color='blue', linestyle='--')
@@ -117,5 +145,5 @@ if expression_file and metadata_file:
         pca_df["Condition"] = y.values
 
         fig, ax = plt.subplots()
-        sns.scatterplot(data=pca_df, x="PC1", y="PC2", hue="Condition", s=100, ax=ax)
+        sns.scatterplot(data=pca_df, x="PC1", y="PC2", hue="Condition", s=100, palette="Blues")
         st.pyplot(fig)
